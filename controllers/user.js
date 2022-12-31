@@ -25,7 +25,10 @@ exports.postSignIn = (req, res, next) => {
                 res.cookie('user', user, {
                     maxAge: 86400000,
                 })
-                res.status(200).json('Logged in successfully');
+                res.status(200).json({
+                    token: token,
+                    user: user
+                });
             } else {
                 return res.status(401).json('Wrong password!');
             }
