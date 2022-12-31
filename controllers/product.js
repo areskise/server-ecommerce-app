@@ -3,7 +3,7 @@ const Product = require('../models/product')
 exports.getAPI = (req, res, next) => {
     const search = req.query.search;
     const regex = new RegExp(search, 'i');
-    if(search) {
+    if(search && search !== '') {
         Product.find({name: regex})
             .then(products => {
                 res.status(200).json(products)
