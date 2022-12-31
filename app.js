@@ -1,5 +1,4 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -24,7 +23,7 @@ app.use(cookieParser());
 app.use(cors({ origin:true, credentials:true }));
 app.use(helmet());
 app.use(compression());
-// app.use(morgan('combined'));
+app.use(morgan('combined'));
 
 app.use(adminRoutes);
 app.use(productRoutes);
