@@ -51,18 +51,20 @@ exports.createNewRoom = (req, res, next) => {
     });
     session.save()
         .then(result => {
-            res.cookie('roomId', result._id, {
-                maxAge: 86400000,
-            });
             // io.getIO().emit('create_room', {
-            //     session: result,
-            //     roomId: result._id
-            // });
-            pusher.trigger("ecommerce-app", "create_room", {
-                session: result,
-                roomId: result._id
-            });
-            res.status(201).json(result._id);
+                //     session: result,
+                //     roomId: result._id
+                // });
+                pusher.trigger("ecommerce-app", "create_room", {
+                    session: result,
+                    roomId: result._id
+                })
+                    .then(result => {
+                        res.cookie('roomId', result._id, {
+                            maxAge: 86400000,
+                        });
+                        res.status(201).json(result._id);
+                    })
         })
         .catch(err => {
             if (!err.statusCode) {
@@ -76,16 +78,18 @@ exports.endRoom = (req, res, next) => {
     const {roomId} = req.body;
     Session.findByIdAndDelete(roomId)
         .then(result => {
-            res.clearCookie('roomId');
             // io.getIO().emit('end_room', {
-            //     session: result,
-            //     roomId: roomId
-            // });
-            pusher.trigger("ecommerce-app", "end_room", {
-                session: result,
-                roomId: roomId
-            });
-            res.status(201).json(result);
+                //     session: result,
+                //     roomId: roomId
+                // });
+                pusher.trigger("ecommerce-app", "end_room", {
+                    session: result,
+                    roomId: roomId
+                })
+                .then(result => {
+                    res.clearCookie('roomId');
+                    res.status(201).json(result);
+                })
         })
         .catch(err => {
             if (!err.statusCode) {
@@ -115,8 +119,10 @@ exports.addMessage = (req, res, next) => {
                 pusher.trigger("ecommerce-app", "send_message", {
                     session: result,
                     roomId: roomId
-                });
-                res.status(200).json('Save message success!');
+                })
+                    .then(result => {
+                        res.status(200).json('Save message success!');
+                    })
             })
             .catch(err => {
                 if (!err.statusCode) {
