@@ -56,15 +56,16 @@ exports.createNewRoom = (req, res, next) => {
                 //     session: result,
                 //     roomId: result._id
                 // });
+                console.log(result);
                 pusher.trigger("ecommerce-app", "create_room", {
                     session: result,
-                    roomId: result._id
+                    room: result
                 })
                     .then(result => {
-                        res.cookie('roomId', result._id, {
+                        res.cookie('roomId', result, {
                             maxAge: 86400000,
                         });
-                        res.status(201).json(result._id);
+                        res.status(201).json(result);
                     })
         })
         .catch(err => {
