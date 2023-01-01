@@ -7,7 +7,7 @@ const pusher = new Pusher({
   key: "eab36ba3e13ebc083cfe",
   secret: "3d2635171f4a9b306498",
   cluster: "ap1",
-  useTLS: true
+  encrypted: true
 });
 
 exports.getRoomByUser = (req, res, next) => {
