@@ -1,5 +1,14 @@
 const Session = require('../models/session');
-const io = require('../socket');
+// const io = require('../socket');
+const Pusher = require("pusher");
+
+const pusher = new Pusher({
+  appId: "1532161",
+  key: "eab36ba3e13ebc083cfe",
+  secret: "3d2635171f4a9b306498",
+  cluster: "ap1",
+  useTLS: true
+});
 
 exports.getRoomByUser = (req, res, next) => {
     const userId = req.query.userId;
@@ -45,7 +54,11 @@ exports.createNewRoom = (req, res, next) => {
             res.cookie('roomId', result._id, {
                 maxAge: 86400000,
             });
-            io.getIO().emit('create_room', {
+            // io.getIO().emit('create_room', {
+            //     session: result,
+            //     roomId: result._id
+            // });
+            pusher.trigger("ecommerce-app", "create_room", {
                 session: result,
                 roomId: result._id
             });
@@ -64,7 +77,11 @@ exports.endRoom = (req, res, next) => {
     Session.findByIdAndDelete(roomId)
         .then(result => {
             res.clearCookie('roomId');
-            io.getIO().emit('end_room', {
+            // io.getIO().emit('end_room', {
+            //     session: result,
+            //     roomId: roomId
+            // });
+            pusher.trigger("ecommerce-app", "end_room", {
                 session: result,
                 roomId: roomId
             });
@@ -91,7 +108,11 @@ exports.addMessage = (req, res, next) => {
         })
             .then(result => {
                 console.log(result);
-                io.getIO().emit('send_message', {
+                // io.getIO().emit('send_message', {
+                //     session: result,
+                //     roomId: roomId
+                // });
+                pusher.trigger("ecommerce-app", "send_message", {
                     session: result,
                     roomId: roomId
                 });
