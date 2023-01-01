@@ -40,7 +40,7 @@ app.use((error, req, res, next) => {
   res.status(status).json('Error! An error occurred. Please try again later');
 });
 
-mongoose.set('strictQuery', false);
+mongoose.set('strictQuery', true);
 mongoose
   .connect(process.env.MONGODB_URI)
   .then(() => {
