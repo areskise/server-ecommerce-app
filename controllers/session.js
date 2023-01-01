@@ -14,10 +14,12 @@ exports.getRoomByUser = (req, res, next) => {
     const userId = req.query.userId;
     Session.findOne({userId: userId})
         .then(result => {
+            if (result) {
                 res.cookie('roomId', result._id, {
                     maxAge: 86400000,
-                });
-                res.status(200).json(result)
+                }); 
+            }
+            res.status(200).json(result)
         })
         .catch(err => {
             if (!err.statusCode) {
