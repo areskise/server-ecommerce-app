@@ -18,8 +18,10 @@ exports.getRoomByUser = (req, res, next) => {
                 res.cookie('roomId', result._id, {
                     maxAge: 86400000,
                 }); 
-            }
-            res.status(200).json(result)
+                res.status(200).json(result)
+            } else {
+                res.end()
+            } 
         })
         .catch(err => {
             if (!err.statusCode) {
