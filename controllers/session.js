@@ -15,7 +15,6 @@ exports.getRoomByUser = (req, res, next) => {
     Session.findOne({userId: userId})
         .then(result => {
             if(result) {
-                log
                 res.cookie('roomId', result._id, {
                     maxAge: 86400000,
                 });
