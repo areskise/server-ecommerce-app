@@ -88,7 +88,7 @@ exports.endRoom = (req, res, next) => {
                     session: result,
                     roomId: roomId
                 })
-                .then(result => {
+                .then(() => {
                     res.clearCookie('roomId');
                     res.status(201).json(result);
                 })
@@ -122,7 +122,7 @@ exports.addMessage = (req, res, next) => {
                     session: result,
                     roomId: roomId
                 })
-                    .then(result => {
+                    .then(() => {
                         res.status(200).json('Save message success!');
                     })
             })
