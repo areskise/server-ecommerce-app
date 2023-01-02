@@ -89,7 +89,8 @@ exports.postOrder = (req, res, next) => {
                 .catch((err) => {
                     console.error('Email sent fail', err)
                 })
-            return req.user.clearCart();
+            req.user.clearCart();
+            res.status(201).json('Order success');
         })
         .catch(err => {
             if (!err.statusCode) {
